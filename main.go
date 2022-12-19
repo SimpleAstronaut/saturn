@@ -7,8 +7,9 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.GET("/", func(context *gin.Context) {
-		context.String(http.StatusOK, "Hello World!")
+	r.LoadHTMLGlob("public/*")
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
 	err := r.Run(":9000")
