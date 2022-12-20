@@ -10,9 +10,19 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"log"
 	"net/http"
 )
+
+// Users 读取用户数据的struct
+type Users struct {
+	Username string
+	Password string
+}
 
 func main() {
 	r := gin.Default()
@@ -33,6 +43,20 @@ func main() {
 			c.HTML(http.StatusOK, "err.html", gin.H{
 				"errmsg": "Username or Password is null",
 			})
+		} else {
+			file, err := ioutil.ReadFile("./data/users.json")
+			var u Users
+			if err != nil {
+				fmt.Printf("文件打开失败 [Err:%s]\n", err.Error())
+				return
+			}
+
+			//解码json
+			err = json.Unmarshal(file, &u)
+			if err != nil {
+				log.Fatal("Error during Unmarshal(): ", err)
+			}
+			c.JSON(200, u)
 		}
 	})
 
