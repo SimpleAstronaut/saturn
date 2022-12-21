@@ -1,3 +1,9 @@
+// Package api Getlist module
+// return blog list or pages list
+// version 1.0.0
+// author SimpleAstronaut
+// 2022-12-21
+
 package api
 
 import (
