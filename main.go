@@ -101,15 +101,17 @@ func main() {
 				fmt.Println("json转换失败")
 			}
 
+			c.JSON(200, blog)
+
 			//渲染html
 			//TODO 无法渲染HTML待修复
-			c.HTML(http.StatusOK, "page.html", gin.H{
+			/*c.HTML(http.StatusOK, "page.html", gin.H{
 				"pageTitle": b.title,
 				"title":     b.title,
 				"author":    b.author,
 				"time":      b.time,
 				"text":      b.blog,
-			})
+			})*/
 		}
 	})
 
