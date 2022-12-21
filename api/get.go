@@ -7,32 +7,31 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 )
 
-type Blog struct {
-	title  string
-	author string
-	time   string
-	blog   string
-}
-
-func Get(mode, name string) {
+func Get(mode, name string) string {
 	//获取blog接口
 	if mode == "blog" {
 		blogPath := "./blog/" + name + ".json"
 		file, err := ioutil.ReadFile(blogPath)
-		var b Blog
 		if err != nil {
 			fmt.Printf("文件打开失败 [Err:%s]\n", err.Error())
-			return
+			return "error"
 		}
-		err = json.Unmarshal(file, &b)
+		result := string(file)
+		return result
+	} else if mode == "page" {
+		pagePath := "./pages/" + name + ".json"
+		file, err := ioutil.ReadFile(pagePath)
 		if err != nil {
-			log.Fatal("Error during Unmarshal(): ", err)
+			fmt.Printf("文件打开失败 [Err:%s]\n", err.Error())
+			return "error"
 		}
+		result := string(file)
+		return result
+	} else {
+		return "error"
 	}
 }

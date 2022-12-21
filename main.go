@@ -25,6 +25,14 @@ type Users struct {
 	Password string
 }
 
+// Blog Get 读取Blog数据的struct
+type Blog struct {
+	title  string
+	author string
+	time   string
+	blog   string
+}
+
 func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("public/*")
@@ -61,6 +69,7 @@ func main() {
 		}
 	})
 
+	//获取列表接口路由
 	r.GET("/getlist", func(c *gin.Context) {
 		mode := c.Query("mode")
 		list := api.Getlist(mode)
@@ -74,6 +83,33 @@ func main() {
 			})
 		} else {
 			c.JSON(200, list)
+		}
+	})
+
+	//获取文章接口路由
+	r.GET("/blog", func(c *gin.Context) {
+		name := c.Query("name")
+		blog := api.Get("blog", name)
+		if blog == "error" {
+			c.HTML(http.StatusOK, "err.html", gin.H{
+				"errmsg": "blog error",
+			})
+		} else {
+			var b Blog
+			err := json.Unmarshal([]byte(blog), &b)
+			if err != nil {
+				fmt.Println("json转换失败")
+			}
+
+			//渲染html
+			//TODO 无法渲染HTML待修复
+			c.HTML(http.StatusOK, "page.html", gin.H{
+				"pageTitle": b.title,
+				"title":     b.title,
+				"author":    b.author,
+				"time":      b.time,
+				"text":      b.blog,
+			})
 		}
 	})
 
