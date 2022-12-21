@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"saturn/api"
 )
 
 // Users 读取用户数据的struct
@@ -57,6 +58,18 @@ func main() {
 				log.Fatal("Error during Unmarshal(): ", err)
 			}
 			c.JSON(200, u)
+		}
+	})
+
+	r.GET("/getlist", func(c *gin.Context) {
+		mode := c.Query("mode")
+		list := api.Getlist(mode)
+		if list == "mode error" {
+			c.JSON(200, "mode error")
+		} else if list == "error" {
+			c.JSON(200, "error")
+		} else {
+			c.JSON(200, list)
 		}
 	})
 
