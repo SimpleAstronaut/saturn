@@ -65,9 +65,13 @@ func main() {
 		mode := c.Query("mode")
 		list := api.Getlist(mode)
 		if list == "mode error" {
-			c.JSON(200, "mode error")
+			c.HTML(http.StatusOK, "err.html", gin.H{
+				"errmsg": "Mode is null",
+			})
 		} else if list == "error" {
-			c.JSON(200, "error")
+			c.HTML(http.StatusOK, "err.html", gin.H{
+				"errmsg": "mode error",
+			})
 		} else {
 			c.JSON(200, list)
 		}
