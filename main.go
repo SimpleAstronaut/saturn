@@ -27,10 +27,10 @@ type Users struct {
 
 // Blog Get 读取Blog数据的struct
 type Blog struct {
-	title  string
-	author string
-	time   string
-	blog   string
+	Title  string `json:"title"`
+	Author string `json:"author"`
+	Time   string `json:"time"`
+	Blog   string `json:"blog"`
 }
 
 func main() {
@@ -101,10 +101,26 @@ func main() {
 				fmt.Println("json转换失败")
 			}
 
-			c.JSON(200, blog)
+			if err := json.Unmarshal([]byte(blog), &b); err == nil {
+
+				//渲染html
+				c.HTML(http.StatusOK, "page.html", gin.H{
+					"pageTitle": b.Title,
+					"title":     b.Title,
+					"author":    b.Author,
+					"time":      b.Time,
+					"text":      b.Blog,
+				})
+				//fmt.Println(b.Title)
+				//fmt.Println("-------------test-------------")
+			} else {
+				fmt.Println(err)
+			}
+
+			//blog = strings.Replace(blog, "", "", -1)
+			//c.JSON(200, blog)
 
 			//渲染html
-			//TODO 无法渲染HTML待修复
 			/*c.HTML(http.StatusOK, "page.html", gin.H{
 				"pageTitle": b.title,
 				"title":     b.title,
